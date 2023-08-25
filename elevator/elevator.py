@@ -1,7 +1,7 @@
 class Elevator:
     """
-    A class representing an elevator and its basic behavior and time of traversing floors.
-    As is it stores the travel time and visited floors each time you visit_floors.
+    A class representing an elevator and its basic behavior.
+    It keeps track of the total travel time and the visited floors each time you visit_floors.
     To reset these class variables call __init__.
 
     Attributes
