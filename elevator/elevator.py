@@ -1,3 +1,5 @@
+import sys
+
 class Elevator:
     """
     A class representing an elevator and its basic behavior.
@@ -28,10 +30,21 @@ class Elevator:
         self.total_travel_time_sec = 0
         self.floors_visited_inorder = set()
 
-    def visit_floors(self, floors_to_visit: list):
+    def visit_floors(self, floors_to_visit: str):
         """
-        Visits the specified floors, starting at the first entry, and returns the total travel time in seconds
-        (not including the first entry specified).
+        Sanitizes and converts string input to a list of floors to visit, starting at the first entry.
+        Keeps track of the order of visited floors plus the total travel time in seconds (not including the first entry)
+        Will exit if invalid input string is given.
+
+        :param floors_to_visit: string of comma delimited list floors as integers, positive or negative, to visit.
+        """
+        floors_to_visit_list = Elevator.sanitize_and_convert_input(floors_to_visit)
+        self.visit_list_of_floors(floors_to_visit_list)
+
+    def visit_list_of_floors(self, floors_to_visit: list):
+        """
+        Visits the specified floors, starting at the first entry.
+        Keeps track of the order of visited floors plus the total travel time in seconds (not including the first entry)
 
         :param floors_to_visit: list of integers, positive or negative, representing the floors to visit
          where the first entry is the starting point.
@@ -76,3 +89,27 @@ class Elevator:
                 closest_floor = next_floor
 
         return closest_floor
+
+    @staticmethod
+    def sanitize_and_convert_input(input_str):
+        """
+        Sanitize and convert comma delimited string into a list of positive or negative integers.
+        If any of the entries are not integers the program exits.
+
+        :return: list of integers representing original string in order
+        """
+        list_str = input_str.split(',')
+        list_int = []
+        for x in list_str:
+            x = x.strip()
+            pos_x = x
+            if x.startswith("-"):
+                pos_x = x.replace("-", "", 1)
+            if not pos_x.isnumeric():
+                sys.exit(f"Invalid input, not numeric, for the item '{x}' from split of input string '{input_str}'")
+
+            # Convert original string to int, since should be safe to do so.
+            int_x = int(x)
+            list_int.append(int_x)
+
+        return list_int
