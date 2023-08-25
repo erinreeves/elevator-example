@@ -11,7 +11,7 @@ class TestElevator(unittest.TestCase):
     def test_visit_list_of_floors_happy_input(self):
         # Inputs: [list of floors to visit] (e.g. elevator start=12 floor=2,9,1,32)
         input_floors = [12, 2, 9, 1, -32]
-        exp_floors_visited_inorder = {12, 9, 2, 1, -32}
+        exp_floors_visited_inorder = [12, 9, 2, 1, -32]
         # Calculate travel time based on expected visit order:
         exp_travel_time = (3 + 7 + 1 + 33) * self.an_elevator.FLOOR_DELTA_TIME_SEC
 
@@ -20,13 +20,12 @@ class TestElevator(unittest.TestCase):
 
         # Outputs: [total travel time, floors visited in order] (e.g. 560 12,2,9,1,32), 420 in this case for time
         assert self.an_elevator.floors_visited_inorder == exp_floors_visited_inorder
-        print(f"order={exp_floors_visited_inorder}")
         assert self.an_elevator.total_travel_time_sec == exp_travel_time
 
     def test_visit_list_of_floors_input_1_floor(self):
         # Input too little
         input_floors = [13]
-        exp_floors_visited_inorder = {13}
+        exp_floors_visited_inorder = [13]
         # Time 0 since didn't visit any additional floors, just initial one
         exp_travel_time = 0
 
@@ -40,7 +39,7 @@ class TestElevator(unittest.TestCase):
     def test_visit_list_of_floors_input_empty(self):
         # Input too little
         input_floors = []
-        exp_floors_visited_inorder = set()
+        exp_floors_visited_inorder = []
         # Time 0 since didn't visit any floors
         exp_travel_time = 0
 
@@ -54,7 +53,7 @@ class TestElevator(unittest.TestCase):
     def test_visit_list_of_floors_dup_input(self):
         # Input duplicates, causing 1 travel, no more.
         input_floors = [0, 1, 1]
-        exp_floors_visited_inorder = {0, 1}
+        exp_floors_visited_inorder = [0, 1]
         # Calculate travel time based on expected visit order:
         exp_travel_time = 1 * self.an_elevator.FLOOR_DELTA_TIME_SEC
 

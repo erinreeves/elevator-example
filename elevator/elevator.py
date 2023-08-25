@@ -28,7 +28,7 @@ class Elevator:
 
     def __init__(self):
         self.total_travel_time_sec = 0
-        self.floors_visited_inorder = set()
+        self.floors_visited_inorder = []
 
     def visit_floors(self, floors_to_visit: str):
         """
@@ -58,7 +58,7 @@ class Elevator:
 
         # Account for starting at a floor and add it to visited set.
         floors_to_visit.remove(current_floor)
-        self.floors_visited_inorder.add(current_floor)
+        self.floors_visited_inorder.append(current_floor)
 
         # Iterate through the floors not yet visited by finding the closest next floor to visit
         while len(floors_to_visit) > 0:
@@ -66,7 +66,7 @@ class Elevator:
 
             # Remove this visited floor and put it onto the visited set.
             floors_to_visit.remove(next_floor)
-            self.floors_visited_inorder.add(next_floor)
+            self.floors_visited_inorder.append(next_floor)
             self.total_travel_time_sec += abs(next_floor - current_floor) * self.FLOOR_DELTA_TIME_SEC
             current_floor = next_floor
 
