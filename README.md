@@ -11,7 +11,7 @@ While this isn't the most efficient elevator it always goes to the closest next 
 
 * There is validation of this and the program will end if invalid input is given.
 ### Execution Command
-From this directory you can execute `python ../elevator-example/` to run the program
+From the root directory you can execute `python -m elevator` to run the program
 
 At the end of the execution a summary will be displayed of the stored/calculated trip information.
 
