@@ -98,14 +98,14 @@ class TestElevator(unittest.TestCase):
         assert output == [-3, 1, -2]
 
     def test_sanitize_convert_input_input_non_numeric_raises_exception(self):
-        with self.assertRaises(SystemExit):
+        with self.assertRaises(ValueError):
             # Bad input with non numeric value
             user_input = " 1a2 "
 
             Elevator.sanitize_and_convert_input(user_input)
 
     def test_sanitize_convert_input_input_extra_negative_signs_raises_exception(self):
-        with self.assertRaises(SystemExit):
+        with self.assertRaises(ValueError):
             # Bad input with extra negative sign
             user_input = " --a1 "
 

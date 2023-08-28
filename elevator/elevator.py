@@ -94,7 +94,7 @@ class Elevator:
     def sanitize_and_convert_input(input_str):
         """
         Sanitize and convert comma delimited string into a list of positive or negative integers.
-        If any of the entries are not integers the program exits.
+        If any of the entries are not integers an ValueError Exception is raised.
 
         :return: list of integers representing original string in order
         """
@@ -106,7 +106,8 @@ class Elevator:
             if x.startswith("-"):
                 pos_x = x.replace("-", "", 1)
             if not pos_x.isnumeric():
-                sys.exit(f"Invalid input, not numeric, for the item '{x}' from split of input string '{input_str}'")
+                raise ValueError(f"Invalid input, not numeric, for the item '{x}'"
+                                 f" from input string '{input_str}'")
 
             # Convert original string to int, since should be safe to do so.
             int_x = int(x)
