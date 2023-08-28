@@ -86,13 +86,15 @@ class Elevator:
         :param floors_to_visit: Sorted List of the unvisited floors, including the current.
 
         :return: Integer of closest floor's index or
-                 None if no other neighbors, floors_to visit is empty, or index out of range.
+                 None if no other neighbors, floors_to visit is empty, or
+                 raise IndexError if index out of range.
         """
         # Index out of range:
-        if current_floor_index < 0 or len(floors_to_visit) - 1 < current_floor_index:
-            return None
-        # Empty neighbors, just current floor left.
-        if len(floors_to_visit) <= 1:
+        if current_floor_index < 0:
+            raise IndexError(f"Index {current_floor_index} is out of range (negative).")
+        if len(floors_to_visit) - 1 < current_floor_index:
+            raise IndexError(f"Index {current_floor_index} out of range for list length {len(floors_to_visit)}.")
+        if len(floors_to_visit) == 1:
             return None
         # No upper floors, so return closest lower floor
         if len(floors_to_visit) - 1 == current_floor_index:

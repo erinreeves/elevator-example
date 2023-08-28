@@ -89,16 +89,17 @@ class TestElevator(unittest.TestCase):
         assert output == exp_closest_floor
 
     def test_find_closest_floor_for_empty_floors(self):
-        # Input
-        current_floor = 0
-        unvisited_floors = []
-        exp_closest_floor = None
+        with self.assertRaises(IndexError):
+            # Input
+            current_floor = 0
+            unvisited_floors = []
+            exp_closest_floor = None
 
-        # Get closes floor
-        output = Elevator.find_closest_floor(current_floor, unvisited_floors)
+            # Get closes floor
+            output = Elevator.find_closest_floor(current_floor, unvisited_floors)
 
-        # Verify output finds closest floor
-        assert output == exp_closest_floor
+            # Verify output finds closest floor
+            assert output == exp_closest_floor
 
     def test_find_closest_floor_no_floors_above(self):
         # Input
@@ -124,29 +125,18 @@ class TestElevator(unittest.TestCase):
         # Verify output finds closest floor
         assert unvisited_floors[output] == exp_closest_floor
 
-    def test_find_closest_floor_index_out_of_range(self):
-        # Input
-        current_floor_index = -1
-        unvisited_floors = [-3]
-        exp_closest_floor = None
-
-        # Get closest floor
-        output = Elevator.find_closest_floor(current_floor_index, unvisited_floors)
-
-        # Verify output finds closest floor
-        assert output == exp_closest_floor
-
     def test_find_closest_floor_index_negative(self):
-        # Input
-        current_floor_index = -1
-        unvisited_floors = [-3]
-        exp_closest_floor = None
+        with self.assertRaises(IndexError):
+            # Input
+            current_floor_index = -1
+            unvisited_floors = [-3]
+            exp_closest_floor = None
 
-        # Get closest floor
-        output = Elevator.find_closest_floor(current_floor_index, unvisited_floors)
+            # Get closest floor
+            output = Elevator.find_closest_floor(current_floor_index, unvisited_floors)
 
-        # Verify output finds closest floor
-        assert output == exp_closest_floor
+            # Verify output finds closest floor
+            assert output == exp_closest_floor
 
     def test_sanitize_convert_input_happy_input(self):
         # Typical input
