@@ -71,24 +71,40 @@ class Elevator:
             current_floor = next_floor
 
     @staticmethod
-    def find_closest_floor(current_floor, set_unvisited_floors: set):
+    def find_closest_floor(current_floor_index, floors_to_visit: list):
         """
-        Get the closest floor, be it up or down.
+        Get the closest floor's index, be it up or down, by looking only at the closest upper and
+        lower neighbor around the current floor's index.
 
-        :param current_floor: Integer of the current floor
-        :param set_unvisited_floors: Set of the unvisited floors
+        :param current_floor_index: Index of the current floor
+        :param floors_to_visit: Sorted List of the unvisited floors, including the current.
 
-        :return: Integer of closest floor or None if unvisited floors empty.
+        :return: Integer of closest floor's index or
+                 None if no other neighbors, floors_to visit is empty, or index out of range.
         """
-        if len(set_unvisited_floors) == 0:
+        # Index out of range:
+        if current_floor_index < 0 or len(floors_to_visit) - 1 < current_floor_index:
             return None
+        # Empty neighbors, just current floor left.
+        if len(floors_to_visit) <= 1:
+            return None
+        # No upper floors, so return closest lower floor
+        if len(floors_to_visit) - 1 == current_floor_index:
+            return current_floor_index - 1
+        else:
+            closest_upper_neighbor = current_floor_index + 1
 
-        closest_floor = None
-        for next_floor in set_unvisited_floors:
-            if closest_floor is None or abs(next_floor - current_floor) < abs(closest_floor - current_floor):
-                closest_floor = next_floor
+        # No lower floors, so return closest upper floor, since eliminated scenario of no downn or upper floor.
+        if current_floor_index == 0:
+            return current_floor_index + 1
+        else:
+            closest_lower_neighbor = current_floor_index - 1
 
-        return closest_floor
+        if abs(floors_to_visit[closest_upper_neighbor] - floors_to_visit[current_floor_index]) <= \
+                abs(floors_to_visit[closest_lower_neighbor] - floors_to_visit[current_floor_index]):
+            return closest_upper_neighbor
+        else:
+            return closest_lower_neighbor
 
     @staticmethod
     def sanitize_and_convert_input(input_str):
