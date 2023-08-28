@@ -102,7 +102,7 @@ class Elevator:
         else:
             closest_upper_neighbor = current_floor_index + 1
 
-        # No lower floors, so return closest upper floor, since eliminated scenario of no downn or upper floor.
+        # No lower floors, so return closest upper floor, since eliminated scenario of no down or upper floor.
         if current_floor_index == 0:
             return current_floor_index + 1
         else:
