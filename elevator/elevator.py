@@ -53,22 +53,29 @@ class Elevator:
         if len(floors_to_visit) == 0:
             return
 
-        current_floor = floors_to_visit[0]
-        floors_to_visit = set(floors_to_visit)
+        next_floor_value = floors_to_visit[0]  # Initial floor, acquire before misordering by setting to a set.
 
-        # Account for starting at a floor and add it to visited set.
-        floors_to_visit.remove(current_floor)
-        self.floors_visited_inorder.append(current_floor)
+        floors_to_visit = list(set(floors_to_visit))  # Remove duplicate floors
+        floors_to_visit.sort()  # Pre sort so easier to find closest neighbor
 
-        # Iterate through the floors not yet visited by finding the closest next floor to visit
+        # Iterate through the floors not yet visited by finding the closest next floor, above or below, to visit
         while len(floors_to_visit) > 0:
-            next_floor = self.find_closest_floor(current_floor, floors_to_visit)
+            # Do this first so works for initial loop too. Do after popping from floors var since value's index changes.
+            current_floor_index = floors_to_visit.index(next_floor_value)
 
-            # Remove this visited floor and put it onto the visited set.
-            floors_to_visit.remove(next_floor)
-            self.floors_visited_inorder.append(next_floor)
-            self.total_travel_time_sec += abs(next_floor - current_floor) * self.FLOOR_DELTA_TIME_SEC
-            current_floor = next_floor
+            next_floor_index = Elevator.find_closest_floor(current_floor_index, floors_to_visit)
+
+            # Remove the current floor, adding to visited floors
+            self.floors_visited_inorder.append(floors_to_visit[current_floor_index])
+
+            # If next floor exists calculate stats
+            if next_floor_index is not None:
+                next_floor_value = floors_to_visit[next_floor_index]
+                time = abs(floors_to_visit[next_floor_index] - floors_to_visit[
+                    current_floor_index]) * self.FLOOR_DELTA_TIME_SEC
+                self.total_travel_time_sec += time
+
+            floors_to_visit.pop(current_floor_index)  # Pop visited floors so don't revisit. Do last so have all values.
 
     @staticmethod
     def find_closest_floor(current_floor_index, floors_to_visit: list):
