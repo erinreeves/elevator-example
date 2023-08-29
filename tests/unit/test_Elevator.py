@@ -8,6 +8,92 @@ class TestElevator(unittest.TestCase):
     def setUp(self):
         self.an_elevator = Elevator()
 
+    def test_visit_floors_realistically_happy_input(self):
+        # Inputs: [list of floors to visit] (e.g. elevator start=12 floor=2,9,1,32)
+        input_floors = "12, 13, 2, 9, 1, -32"
+        exp_floors_visited_inorder = [12, 13, 9, 2, 1, -32]
+        # Calculate travel time based on expected visit order:
+        exp_travel_time = (1 + 4 + 7 + 1 + 33) * self.an_elevator.FLOOR_DELTA_TIME_SEC
+
+        # Travel specified floors
+        self.an_elevator.visit_floors_realistically(input_floors)
+
+        # Outputs: [total travel time, floors visited in order] (e.g. 560 12,2,9,1,32), 420 in this case for time
+        assert self.an_elevator.floors_visited_inorder == exp_floors_visited_inorder
+        assert self.an_elevator.total_travel_time_sec == exp_travel_time
+
+    def test_visit_floors_realistically_floors_above_only(self):
+        # Input too little
+        input_floors = "1, 10"
+        exp_floors_visited_inorder = [1, 10]
+        # Time 0 since didn't visit any additional floors, just initial one
+        exp_travel_time = 9 * self.an_elevator.FLOOR_DELTA_TIME_SEC
+
+        # Travel specified floors
+        self.an_elevator.visit_floors_realistically(input_floors)
+
+        # Verify output indicates no floors traveled to
+        assert self.an_elevator.floors_visited_inorder == exp_floors_visited_inorder
+        assert self.an_elevator.total_travel_time_sec == exp_travel_time
+
+    def test_visit_floors_realistically_floors_below_only(self):
+        # Input too little
+        input_floors = "10, 1"
+        exp_floors_visited_inorder = [10, 1]
+        # Time 0 since didn't visit any additional floors, just initial one
+        exp_travel_time = 9 * self.an_elevator.FLOOR_DELTA_TIME_SEC
+
+        # Travel specified floors
+        self.an_elevator.visit_floors_realistically(input_floors)
+
+        # Verify output indicates no floors traveled to
+        assert self.an_elevator.floors_visited_inorder == exp_floors_visited_inorder
+        assert self.an_elevator.total_travel_time_sec == exp_travel_time
+
+    def test_visit_floors_realistically_input_1_floor(self):
+        # Input too little
+        input_floors = "13"
+        exp_floors_visited_inorder = [13]
+        # Time 0 since didn't visit any additional floors, just initial one
+        exp_travel_time = 0
+
+        # Travel specified floors
+        self.an_elevator.visit_floors_realistically(input_floors)
+
+        # Verify output indicates no floors traveled to
+        assert self.an_elevator.floors_visited_inorder == exp_floors_visited_inorder
+        assert self.an_elevator.total_travel_time_sec == exp_travel_time
+
+    def test_visit_floors_realistically_input_empty(self):
+        with self.assertRaises(ValueError):
+
+            # Input too little
+            input_floors = ""
+            exp_floors_visited_inorder = []
+            # Time 0 since didn't visit any floors
+            exp_travel_time = 0
+
+            # Travel specified floors
+            self.an_elevator.visit_floors_realistically(input_floors)
+
+            # Verify output indicates no floors traveled to
+            assert self.an_elevator.floors_visited_inorder == exp_floors_visited_inorder
+            assert self.an_elevator.total_travel_time_sec == exp_travel_time
+
+    def test_visit_floors_realistically_dup_input(self):
+        # Input duplicates, causing 1 travel, no more.
+        input_floors = "0, 1, 1"
+        exp_floors_visited_inorder = [0, 1]
+        # Calculate travel time based on expected visit order:
+        exp_travel_time = 1 * self.an_elevator.FLOOR_DELTA_TIME_SEC
+
+        # Travel specified floors
+        self.an_elevator.visit_floors_realistically(input_floors)
+
+        # Verify output indicates 1 floor traveled to
+        assert self.an_elevator.floors_visited_inorder == exp_floors_visited_inorder
+        assert self.an_elevator.total_travel_time_sec == exp_travel_time
+
     def test_visit_list_of_floors_happy_input(self):
         # Inputs: [list of floors to visit] (e.g. elevator start=12 floor=2,9,1,32)
         input_floors = [12, 2, 9, 1, -32]
